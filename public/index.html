@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Equinox Wealth | Premium Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Ambient Background Orbs -->
+  <div class="ambient-orb orb-primary"></div>
+  <div class="ambient-orb orb-secondary"></div>
+
+  <!-- AUTHENTICATION VIEW -->
+  <div id="auth-view" class="view">
+    <div class="auth-split">
+      <div class="auth-visual">
+        <div class="visual-content">
+          <i data-lucide="compass" class="logo-hero"></i>
+          <h1>Equinox Wealth</h1>
+          <p>Navigate your financial future with unparalleled clarity and precision.</p>
+        </div>
+      </div>
+      <div class="auth-form-container">
+        <div class="auth-panel glass-panel">
+          <div class="auth-header-mobile">
+            <i data-lucide="compass" class="logo-icon"></i>
+            <h2>Equinox</h2>
+          </div>
+          
+          <div class="auth-tabs">
+            <button class="tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+            <button class="tab-btn" onclick="switchAuthTab('register')">Create Account</button>
+          </div>
+
+          <!-- Login Form -->
+          <form id="login-form" onsubmit="handleAuth(event, 'login')">
+            <div class="input-group">
+              <label>Email Address</label>
+              <div class="input-wrapper">
+                <i data-lucide="mail"></i>
+                <input type="email" id="login-email" required placeholder="name@example.com">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Password</label>
+              <div class="input-wrapper">
+                <i data-lucide="lock"></i>
+                <input type="password" id="login-password" required placeholder="••••••••">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In <i data-lucide="arrow-right"></i></button>
+            <div id="login-error" class="error-msg"></div>
+          </form>
+
+          <!-- Register Form -->
+          <form id="register-form" onsubmit="handleAuth(event, 'register')" style="display: none;">
+            <div class="input-group">
+              <label>Full Name</label>
+              <div class="input-wrapper">
+                <i data-lucide="user"></i>
+                <input type="text" id="reg-name" required placeholder="John Doe">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Email Address</label>
+              <div class="input-wrapper">
+                <i data-lucide="mail"></i>
+                <input type="email" id="reg-email" required placeholder="name@example.com">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Password</label>
+              <div class="input-wrapper">
+                <i data-lucide="lock"></i>
+                <input type="password" id="reg-password" required placeholder="••••••••">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>User Role</label>
+              <div class="input-wrapper">
+                <i data-lucide="shield"></i>
+                <select id="reg-role" required>
+                  <option value="viewer">Viewer (Read-only)</option>
+                  <option value="analyst">Analyst (Summary)</option>
+                  <option value="admin">Admin (Full Access)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Account <i data-lucide="user-plus"></i></button>
+            <div id="reg-error" class="error-msg"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboard-view" class="view" style="display: none;">
+    <div class="dashboard-layout">
+      
+      <!-- Sidebar -->
+      <aside class="sidebar glass-panel">
+        <div class="sidebar-brand">
+          <i data-lucide="compass" class="brand-icon"></i>
+          <span>Equinox Wealth</span>
+        </div>
+        <div class="sidebar-nav">
+          <a href="#" class="nav-item active"><i data-lucide="grid"></i> Overview</a>
+          <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
+          <a href="#" class="nav-item"><i data-lucide="credit-card"></i> Cards</a>
+          <a href="#" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+        </div>
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar"><i data-lucide="user"></i></div>
+            <span id="user-greeting">Hello, User</span>
+          </div>
+          <button onclick="logout()" class="btn-icon" title="Logout"><i data-lucide="log-out"></i></button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="top-header">
+          <div>
+            <h1>Dashboard Overview</h1>
+            <p class="subtitle">Monitor your financial heartbeat</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-icon bell-btn"><i data-lucide="bell"></i><span class="badge-dot"></span></button>
+          </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="summary-grid">
+          <div class="summary-card glass-panel group">
+            <div class="card-glow"></div>
+            <div class="card-icon blue"><i data-lucide="wallet"></i></div>
+            <div class="card-info">
+              <h3>Net Balance</h3>
+              <h2 id="net-balance">$0.00</h2>
+            </div>
+          </div>
+          <div class="summary-card glass-panel group">
+            <div class="card-glow"></div>
+            <div class="card-icon green"><i data-lucide="trending-up"></i></div>
+            <div class="card-info">
+              <h3>Total Income</h3>
+              <h2 id="total-income">$0.00</h2>
+            </div>
+          </div>
+          <div class="summary-card glass-panel group">
+            <div class="card-glow"></div>
+            <div class="card-icon red"><i data-lucide="trending-down"></i></div>
+            <div class="card-info">
+              <h3>Total Expenses</h3>
+              <h2 id="total-expense">$0.00</h2>
+            </div>
+          </div>
+        </section>
+
+        <div class="main-grid">
+          <!-- New Record Form -->
+          <section class="action-panel glass-panel">
+            <div class="panel-header-simple">
+              <h3><i data-lucide="plus"></i> New Transaction</h3>
+            </div>
+            <form id="record-form" onsubmit="addRecord(event)">
+              <div class="input-group">
+                <label>Transaction Type</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="type" value="income" checked>
+                    <span class="radio-custom income"></span> Income
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="type" value="expense">
+                    <span class="radio-custom expense"></span> Expense
+                  </label>
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label>Amount ($)</label>
+                <div class="input-wrapper">
+                  <i data-lucide="dollar-sign"></i>
+                  <input type="number" id="rec-amount" step="0.01" required placeholder="0.00">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label>Category</label>
+                <div class="input-wrapper">
+                  <i data-lucide="tag"></i>
+                  <select id="rec-category" required>
+                    <option value="Salary">Salary</option>
+                    <option value="Business">Business</option>
+                    <option value="Food">Food & Dining</option>
+                    <option value="Transport">Transportation</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label>Notes</label>
+                <div class="input-wrapper">
+                  <i data-lucide="align-left"></i>
+                  <input type="text" id="rec-notes" placeholder="Brief description">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Save Transaction <i data-lucide="arrow-right"></i></button>
+              <div id="rec-msg" class="form-msg"></div>
+            </form>
+          </section>
+
+          <!-- Recent Transactions -->
+          <section class="recent-panel glass-panel">
+            <div class="panel-header">
+              <h3><i data-lucide="activity"></i> Recent Activity</h3>
+              <button class="btn btn-sm btn-outline refresh-btn" onclick="fetchDashboard()">
+                <i data-lucide="refresh-cw" class="icon-sm"></i> Refresh
+              </button>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-body">
+                  <tr><td colspan="4" class="text-center loading-state">
+                    <i data-lucide="loader" class="spin"></i> Loading data...
+                  </td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
